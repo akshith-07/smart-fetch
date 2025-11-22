@@ -1,0 +1,77 @@
+{
+  "name": "smart-fetch",
+  "version": "1.0.0",
+  "description": "Enterprise-grade universal API client with intelligent caching, retry logic, and offline support",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run build:types",
+    "build:cjs": "tsc --module commonjs --outDir dist",
+    "build:esm": "tsc --module esnext --outDir dist/esm && mv dist/esm/index.js dist/index.esm.js && rm -rf dist/esm",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
+    "clean": "rm -rf dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "fetch",
+    "api",
+    "client",
+    "cache",
+    "retry",
+    "offline",
+    "indexeddb",
+    "react",
+    "hooks",
+    "typescript",
+    "graphql",
+    "http"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akshith-07/smart-fetch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/akshith-07/smart-fetch/issues"
+  },
+  "homepage": "https://github.com/akshith-07/smart-fetch#readme",
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "idb": "^7.1.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.6",
+    "@types/react": "^18.2.46",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "react": "^18.2.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
