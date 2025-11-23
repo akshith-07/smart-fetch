@@ -5,20 +5,18 @@ import { isOnline } from '../utils';
 interface OfflineDB extends DBSchema {
   queue: {
     key: string;
-    value: OfflineQueueEntry;
+    value: OfflineQueueEntry & { id: string };
   };
 }
 
 export class OfflineQueue {
   private dbName: string;
-  private storeName: string;
   private db: IDBPDatabase<OfflineDB> | null = null;
   private isProcessing = false;
   private listeners: Set<() => void> = new Set();
 
-  constructor(dbName = 'smart-fetch-offline', storeName = 'queue') {
+  constructor(dbName = 'smart-fetch-offline', _storeName = 'queue') {
     this.dbName = dbName;
-    this.storeName = storeName;
     this.setupOnlineListener();
   }
 
@@ -47,35 +45,35 @@ export class OfflineQueue {
     const db = await this.getDB();
     const id = this.generateId();
 
-    const entry: OfflineQueueEntry = {
+    const entry: OfflineQueueEntry & { id: string } = {
       id,
       config,
       timestamp: Date.now(),
       retryCount: 0,
     };
 
-    await db.add(this.storeName, entry);
+    await db.add('queue' as const, entry);
     return id;
   }
 
   async dequeue(id: string): Promise<void> {
     const db = await this.getDB();
-    await db.delete(this.storeName, id);
+    await db.delete('queue' as const, id);
   }
 
   async getAll(): Promise<OfflineQueueEntry[]> {
     const db = await this.getDB();
-    return db.getAll(this.storeName);
+    return db.getAll('queue' as const);
   }
 
   async clear(): Promise<void> {
     const db = await this.getDB();
-    await db.clear(this.storeName);
+    await db.clear('queue' as const);
   }
 
   async size(): Promise<number> {
     const db = await this.getDB();
-    return db.count(this.storeName);
+    return db.count('queue' as const);
   }
 
   onProcessed(callback: () => void): () => void {
@@ -102,13 +100,13 @@ export class OfflineQueue {
         } catch (error) {
           // Update retry count
           const db = await this.getDB();
-          entry.retryCount++;
+          const updatedEntry = { ...entry, retryCount: entry.retryCount + 1 };
 
           // Remove from queue if too many retries
-          if (entry.retryCount > 3) {
+          if (updatedEntry.retryCount > 3) {
             await this.dequeue(entry.id);
           } else {
-            await db.put(this.storeName, entry);
+            await db.put('queue' as const, updatedEntry);
           }
         }
       }

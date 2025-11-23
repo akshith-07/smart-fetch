@@ -1,5 +1,5 @@
 import { SmartFetch } from '../core/SmartFetch';
-import { NetworkError, TimeoutError } from '../errors';
+import { NetworkError } from '../errors';
 
 describe('SmartFetch', () => {
   let client: SmartFetch;

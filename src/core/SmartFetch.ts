@@ -3,7 +3,6 @@ import {
   RequestConfig,
   SmartFetchResponse,
   HttpMethod,
-  CacheConfig,
   RetryConfig,
   RateLimitConfig,
   MockConfig,
@@ -12,7 +11,7 @@ import {
 import { CacheManager } from '../cache';
 import { OfflineQueue } from '../offline';
 import { MiddlewareManager } from '../middleware';
-import { GraphQLClient, isGraphQLRequest } from '../graphql';
+import { GraphQLClient } from '../graphql';
 import {
   SmartFetchError,
   NetworkError,
@@ -204,7 +203,6 @@ export class SmartFetch {
         mode: config.mode,
       };
 
-      const startTime = Date.now();
       const response = await fetch(url, fetchOptions);
       cleanup();
 
@@ -425,7 +423,7 @@ export class SmartFetch {
       return retry ? { maxRetries: 3, delay: 1000, backoff: 2 } : null;
     }
 
-    return retry;
+    return retry || null;
   }
 
   private shouldRetry(error: any, retryCount: number, config: RetryConfig): boolean {
@@ -468,7 +466,7 @@ export class SmartFetch {
   }
 
   private getMockResponse<T = any>(config: RequestConfig): SmartFetchResponse<T> | null {
-    for (const [key, mock] of this.mockResponses) {
+    for (const [, mock] of this.mockResponses) {
       const urlMatch =
         typeof mock.url === 'string'
           ? config.url === mock.url

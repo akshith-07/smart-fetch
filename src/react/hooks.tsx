@@ -72,7 +72,7 @@ export function useFetch<T = any>(
         onSuccess?.(response.data);
       }
     } catch (err) {
-      if (mountedRef.current && err.name !== 'AbortError') {
+      if (mountedRef.current && (err as Error).name !== 'AbortError') {
         setError(err);
         setIsLoading(false);
         setIsFetching(false);
@@ -90,6 +90,7 @@ export function useFetch<T = any>(
       const interval = setInterval(fetchData, refetchInterval);
       return () => clearInterval(interval);
     }
+    return undefined;
   }, [refetchInterval, enabled, fetchData]);
 
   useEffect(() => {
@@ -98,6 +99,7 @@ export function useFetch<T = any>(
       window.addEventListener('focus', handleFocus);
       return () => window.removeEventListener('focus', handleFocus);
     }
+    return undefined;
   }, [refetchOnWindowFocus, enabled, fetchData]);
 
   useEffect(() => {

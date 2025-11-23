@@ -4,7 +4,7 @@ import { CacheEntry, CacheStrategy } from '../types';
 interface CacheDB extends DBSchema {
   cache: {
     key: string;
-    value: CacheEntry;
+    value: CacheEntry & { key: string };
   };
 }
 
@@ -118,12 +118,10 @@ export class LocalStorageCacheAdapter implements CacheAdapter {
 
 export class IndexedDBCacheAdapter implements CacheAdapter {
   private dbName: string;
-  private storeName: string;
   private db: IDBPDatabase<CacheDB> | null = null;
 
-  constructor(dbName = 'smart-fetch-cache', storeName = 'cache') {
+  constructor(dbName = 'smart-fetch-cache', _storeName = 'cache') {
     this.dbName = dbName;
-    this.storeName = storeName;
   }
 
   private async getDB(): Promise<IDBPDatabase<CacheDB>> {
@@ -142,7 +140,7 @@ export class IndexedDBCacheAdapter implements CacheAdapter {
   async get<T>(key: string): Promise<CacheEntry<T> | null> {
     try {
       const db = await this.getDB();
-      const entry = await db.get(this.storeName, key);
+      const entry = await db.get('cache' as const, key);
 
       if (!entry) return null;
 
@@ -160,7 +158,7 @@ export class IndexedDBCacheAdapter implements CacheAdapter {
   async set<T>(key: string, value: CacheEntry<T>): Promise<void> {
     try {
       const db = await this.getDB();
-      await db.put(this.storeName, value);
+      await db.put('cache' as const, { ...value, key });
     } catch (error) {
       console.error('IndexedDB error:', error);
     }
@@ -169,7 +167,7 @@ export class IndexedDBCacheAdapter implements CacheAdapter {
   async delete(key: string): Promise<void> {
     try {
       const db = await this.getDB();
-      await db.delete(this.storeName, key);
+      await db.delete('cache' as const, key);
     } catch (error) {
       console.error('IndexedDB error:', error);
     }
@@ -178,7 +176,7 @@ export class IndexedDBCacheAdapter implements CacheAdapter {
   async clear(): Promise<void> {
     try {
       const db = await this.getDB();
-      await db.clear(this.storeName);
+      await db.clear('cache' as const);
     } catch (error) {
       console.error('IndexedDB error:', error);
     }
@@ -187,7 +185,7 @@ export class IndexedDBCacheAdapter implements CacheAdapter {
   async has(key: string): Promise<boolean> {
     try {
       const db = await this.getDB();
-      const entry = await db.get(this.storeName, key);
+      const entry = await db.get('cache' as const, key);
       return entry !== undefined;
     } catch {
       return false;
@@ -204,7 +202,7 @@ export class CacheManager {
   private adapters: Map<CacheStrategy, CacheAdapter>;
 
   constructor() {
-    this.adapters = new Map([
+    this.adapters = new Map<CacheStrategy, CacheAdapter>([
       ['memory', new MemoryCacheAdapter()],
       ['localStorage', new LocalStorageCacheAdapter()],
       ['indexedDB', new IndexedDBCacheAdapter()],
@@ -240,7 +238,7 @@ export class CacheManager {
     await adapter.clear();
   }
 
-  async invalidatePattern(strategy: CacheStrategy, pattern: string): Promise<void> {
+  async invalidatePattern(strategy: CacheStrategy, _pattern: string): Promise<void> {
     const adapter = this.getAdapter(strategy);
     if (!adapter) return;
 
