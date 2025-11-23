@@ -2,12 +2,12 @@
 global.fetch = jest.fn();
 
 // Mock IndexedDB
-const indexedDB = {
+const indexedDBMock = {
   open: jest.fn(),
   deleteDatabase: jest.fn(),
 };
 
-global.indexedDB = indexedDB as any;
+(global as any).indexedDB = indexedDBMock;
 
 // Mock localStorage
 const localStorageMock = (() => {

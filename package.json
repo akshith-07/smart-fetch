@@ -5,10 +5,12 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run build:types",
@@ -20,27 +22,42 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "eslint src --ext .ts,.tsx",
-    "prepublishOnly": "npm run build && npm test"
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
+    "prepublishOnly": "npm run build && npm test",
+    "size": "size-limit"
   },
   "keywords": [
     "fetch",
     "api",
     "client",
+    "http",
+    "request",
     "cache",
+    "caching",
     "retry",
     "offline",
+    "offline-first",
     "indexeddb",
+    "localstorage",
     "react",
     "hooks",
     "typescript",
     "graphql",
-    "http"
+    "axios",
+    "ajax",
+    "promise",
+    "middleware",
+    "interceptor",
+    "rate-limit",
+    "deduplication"
   ],
-  "author": "",
+  "author": "akshith-07",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/akshith-07/smart-fetch.git"
+    "url": "git+https://github.com/akshith-07/smart-fetch.git"
   },
   "bugs": {
     "url": "https://github.com/akshith-07/smart-fetch/issues"

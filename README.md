@@ -2,8 +2,11 @@
 
 > Enterprise-grade universal API client with intelligent caching, retry logic, and offline support
 
-[![npm version](https://badge.fury.io/js/smart-fetch.svg)](https://badge.fury.io/js/smart-fetch)
+[![npm version](https://badge.fury.io/js/smart-fetch.svg)](https://www.npmjs.com/package/smart-fetch)
+[![CI](https://github.com/akshith-07/smart-fetch/actions/workflows/ci.yml/badge.svg)](https://github.com/akshith-07/smart-fetch/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ## Features
 
@@ -535,34 +538,75 @@ See the [examples](./examples) directory for:
 - GraphQL examples
 - Advanced usage patterns
 
+## Package Size
+
+Smart-fetch is designed to be lightweight and tree-shakeable:
+- Core bundle: ~15KB (minified + gzipped)
+- With all features: ~25KB (minified + gzipped)
+- Zero dependencies (except idb and zod)
+
+## Browser Support
+
+- Chrome/Edge: Latest 2 versions
+- Firefox: Latest 2 versions
+- Safari: Latest 2 versions
+- Node.js: 16.x, 18.x, 20.x+
+
 ## Publishing
 
-To publish this package:
-
-1. Build the package:
-```bash
-npm run build
-```
-
-2. Run tests:
-```bash
-npm test
-```
-
-3. Update version:
-```bash
-npm version patch|minor|major
-```
-
-4. Publish to npm:
-```bash
-npm publish
-```
+For package maintainers, see [PUBLISHING.md](PUBLISHING.md) for detailed publishing instructions.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Quick Start for Contributors
+
+```bash
+# Clone the repository
+git clone https://github.com/akshith-07/smart-fetch.git
+cd smart-fetch
+
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Build the project
+npm run build
+```
+
+## Security
+
+Please see our [Security Policy](SECURITY.md) for reporting vulnerabilities.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## License
 
-MIT © 2025
+MIT © 2025 [akshith-07](https://github.com/akshith-07)
+
+## Support
+
+- 📖 [Documentation](https://github.com/akshith-07/smart-fetch#readme)
+- 💬 [Discussions](https://github.com/akshith-07/smart-fetch/discussions)
+- 🐛 [Issue Tracker](https://github.com/akshith-07/smart-fetch/issues)
+- 📧 Contact: See [package.json](package.json)
+
+## Acknowledgments
+
+Inspired by:
+- [Axios](https://github.com/axios/axios) - Promise based HTTP client
+- [TanStack Query](https://github.com/TanStack/query) - Powerful data fetching for React
+- [SWR](https://github.com/vercel/swr) - React Hooks for data fetching
+
+## Star History
+
+If you find this project useful, please consider giving it a star ⭐
+
+---
+
+Made with ❤️ by [akshith-07](https://github.com/akshith-07)

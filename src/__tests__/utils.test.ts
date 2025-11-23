@@ -87,11 +87,11 @@ describe('Utils', () => {
 
   describe('mergeConfig', () => {
     it('should merge configs deeply', () => {
-      const base = {
+      const base: any = {
         headers: { 'Content-Type': 'application/json' },
         timeout: 5000,
       };
-      const override = {
+      const override: any = {
         headers: { Authorization: 'Bearer token' },
       };
       const merged = mergeConfig(base, override);
